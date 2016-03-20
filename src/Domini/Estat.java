@@ -1,6 +1,8 @@
 package Domini;
 
 import java.util.ArrayList;
+import java.util.Set;
+
 import IA.DistFS.*;
 public class Estat {
 	private int[] peticions;
@@ -102,7 +104,7 @@ public class Estat {
 	 * @param fileId
      * @return un parell on el primer és el temps minim i l'altre el servidor més proper.
      */
-	private int[] cercaMin(Set<Integer> fileLocations,Servers ser, int fileId,int UserId){
+	private int[] cercaMin(Set<Integer> fileLocations, Servers ser, int fileId, int UserId){
 		int minTime = Integer.MAX_VALUE;
 		int serMin = -1;
 		while (fileLocations.iterator().hasNext()){

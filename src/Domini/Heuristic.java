@@ -15,7 +15,7 @@ public class Heuristic  implements HeuristicFunction{
         double M2 = 0.0;
         double sd;
         for(int i = 1; i <= n ; ++i) {
-            double t = state.getTime(i);
+            double t = state.getTime(i - 1);
             if( t > max ) max = t;
             double delta = t - mean;
             mean += delta / i;

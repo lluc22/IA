@@ -12,8 +12,11 @@ public class Estat {
 		peticions = new int[req.size()];
 		tempsServidors = new int[ser.size()];
 		initArrays();
+		if(numGenIni == 1){generaSolNaif(req, ser);}
+		else if(numGenIni == 2) {generarSolMaxTime(req, ser);}
+		else if(numGenIni == 3) {generarSolMinTime(req, ser);}
 	}
-
+	//Operadors
 	public void assigna (int pet, int serv, Requests req, Servers ser) {
 		int usuari = req.getRequest(pet)[0];
 		int servAntic = peticions[pet];
@@ -34,6 +37,8 @@ public class Estat {
 		peticions[pet2] = aux;
 	}
 
+
+	//Generadors de solucions inicials.
 	/**
 	 *
 	 * @param req peticions demandades.
@@ -85,6 +90,8 @@ public class Estat {
 			tempsServidors[serAct] = values[1];
 		}
 	}
+
+	//Funcions auxiliars.
 	/**
 	 * Inicialitza l'array de peticions i el de temps.
 	 */
@@ -159,5 +166,19 @@ public class Estat {
 		retValues[2] = tempsAux;
 		return retValues;
 	}
+
+	/**
+	 *
+	 * @param idServer id del servidor sol·licitat.
+	 * @return el temps total de transmissio del servidor sol·licitat.
+	 */
+	public int getTime(int idServer){
+		return tempsServidors[idServer];
+	}
+	/**
+	 *
+	 * @return el nombre de servidors.
+	 */
+	public int serversNum(){return tempsServidors.length;}
 
 }

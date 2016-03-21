@@ -1,12 +1,13 @@
 package Domini;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 
 import IA.DistFS.*;
 public class Estat {
-	private int[] peticions;
-	private int[] tempsServidors;
+	public int[] peticions;
+	public int[] tempsServidors;
 
 	public Estat(Requests req,Servers ser, int numGenIni){
 		peticions = new int[req.size()];
@@ -114,9 +115,9 @@ public class Estat {
 	private int[] cercaMin(Set<Integer> fileLocations, Servers ser, int fileId, int UserId){
 		int minTime = Integer.MAX_VALUE;
 		int serMin = -1;
-		while (fileLocations.iterator().hasNext()){
-			int serAct = fileLocations.iterator().next();
-			int timeAct = ser.tranmissionTime(serAct,UserId);
+		for(Iterator it = fileLocations.iterator(); it.hasNext();){
+            int serAct = (int) it.next();
+            int timeAct = ser.tranmissionTime(serAct,UserId);
 			if(timeAct < minTime){
 				minTime = timeAct;
 				serMin = serAct;
@@ -141,8 +142,8 @@ public class Estat {
 		int tempsAux = Integer.MAX_VALUE;
 		int serAux = -1;
 		int timeSerAux = Integer.MAX_VALUE;
-		while (fileLocations.iterator().hasNext()){
-			int serAct = fileLocations.iterator().next();
+		for(Iterator it = fileLocations.iterator(); it.hasNext();){
+			int serAct = (int) it.next();
 			int timeSer = tempsServidors[serAct];
 			int timeAct = ser.tranmissionTime(serAct,UserId);
 			if((timeAct + timeSer) <= tempsMax){

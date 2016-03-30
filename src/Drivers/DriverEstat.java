@@ -15,12 +15,12 @@ public class DriverEstat {
             ser = new Servers(10,2,1234);
             Estat estat = new Estat(req,ser,idSol);
             System.out.println("Peticions:");
-            for(int i = 0; i < estat.peticions.length; ++i){
-                System.out.println("Nº pet: " + i + " Servidor: " + estat.peticions[i]);
+            for(int i = 0; i < estat.mPeticions.length; ++i){
+                System.out.println("Nº pet: " + i + " Servidor: " + estat.mPeticions[i]);
             }
             System.out.println("Temps totals dels servidors:");
-            for(int i = 0; i < estat.tempsServidors.length; ++i){
-                System.out.println("Servidor: " + i + " Temps total: " + estat.tempsServidors[i]);
+            for(int i = 0; i < estat.mTempsServidors.length; ++i){
+                System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
             }
         } catch (Servers.WrongParametersException e) {
             e.printStackTrace();

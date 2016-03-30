@@ -6,36 +6,48 @@ import java.util.Set;
 
 import IA.DistFS.*;
 public class Estat {
-	public int[] peticions;
-	public int[] tempsServidors;
+	public int[] mPeticions;
+	public int[] mTempsServidors;
+	public Requests mRequests;
+	public Servers mServers;
 
-	public Estat(Requests req,Servers ser, int numGenIni){
-		peticions = new int[req.size()];
-		tempsServidors = new int[ser.size()];
+	public Estat(Requests requests,Servers servers, int numGenIni){
+		mRequests = requests;
+		mServers = servers;
+		mPeticions = new int[mRequests.size()];
+		mTempsServidors = new int[mServers.size()];
 		initArrays();
-		if(numGenIni == 1){generaSolNaif(req, ser);}
-		else if(numGenIni == 2) {generarSolMaxTime(req, ser);}
-		else if(numGenIni == 3) {generarSolMinTime(req, ser);}
-	}
-	//Operadors
-	public void assigna (int pet, int serv, Requests req, Servers ser) {
-		int usuari = req.getRequest(pet)[0];
-		int servAntic = peticions[pet];
-		tempsServidors[servAntic] -= ser.tranmissionTime(servAntic, usuari);
-		peticions[pet] = serv;
-		tempsServidors[serv] += ser.tranmissionTime(serv, usuari);
+		if(numGenIni == 1){generaSolNaif(mRequests, mServers);}
+		else if(numGenIni == 2) {generarSolMaxTime(mRequests, mServers);}
+		else if(numGenIni == 3) {generarSolMinTime(mRequests, mServers);}
 	}
 
-	public void intercanvia (int pet1, int pet2, Requests req, Servers ser) {
-		int tempsAntic1 = ser.tranmissionTime(peticions[pet1], req.getRequest(pet1)[0]);
-		int tempsAntic2 = ser.tranmissionTime(peticions[pet2], req.getRequest(pet2)[0]);
-		int tempsNou1 = ser.tranmissionTime(peticions[pet2], req.getRequest(pet1)[0]);
-		int tempsNou2 = ser.tranmissionTime(peticions[pet1], req.getRequest(pet2)[0]);
-		tempsServidors[peticions[pet1]] += tempsNou2 - tempsAntic1;
-		tempsServidors[peticions[pet2]] += tempsNou1 - tempsAntic2;
-		int aux = peticions[pet1];
-		peticions[pet1] = peticions[pet2];
-		peticions[pet2] = aux;
+	public Estat(Requests requests, Servers servers, int[] peticions, int[] tempsServidors){
+		mRequests = requests;
+		mServers = servers;
+		mPeticions = peticions.clone();
+		mTempsServidors = tempsServidors.clone();
+	}
+
+	//Operadors
+	public void assigna (int pet, int serv) {
+		int usuari = mRequests.getRequest(pet)[0];
+		int servAntic = mPeticions[pet];
+		mTempsServidors[servAntic] -= mServers.tranmissionTime(servAntic, usuari);
+		mPeticions[pet] = serv;
+		mTempsServidors[serv] += mServers.tranmissionTime(serv, usuari);
+	}
+
+	public void intercanvia (int pet1, int pet2) {
+		int tempsAntic1 = mServers.tranmissionTime(mPeticions[pet1], mRequests.getRequest(pet1)[0]);
+		int tempsAntic2 = mServers.tranmissionTime(mPeticions[pet2], mRequests.getRequest(pet2)[0]);
+		int tempsNou1 = mServers.tranmissionTime(mPeticions[pet2], mRequests.getRequest(pet1)[0]);
+		int tempsNou2 = mServers.tranmissionTime(mPeticions[pet1], mRequests.getRequest(pet2)[0]);
+		mTempsServidors[mPeticions[pet1]] += tempsNou2 - tempsAntic1;
+		mTempsServidors[mPeticions[pet2]] += tempsNou1 - tempsAntic2;
+		int aux = mPeticions[pet1];
+		mPeticions[pet1] = mPeticions[pet2];
+		mPeticions[pet2] = aux;
 	}
 
 
@@ -51,11 +63,11 @@ public class Estat {
 			int fileId = req.getRequest(i)[1];
 			Set<Integer> fileLocations = ser.fileLocations(fileId);
 			int servId = fileLocations.iterator().next();
-			peticions[i] = servId; //s'assigna el servidor a la peticio i-esima.
+			mPeticions[i] = servId; //s'assigna el servidor a la peticio i-esima.
 
 			int userId = req.getRequest(i)[0];
 			int transTime = ser.tranmissionTime(servId,userId);
-			tempsServidors[servId]+=transTime; //sumem el temps de transmissio de la peticio assignada.
+			mTempsServidors[servId]+=transTime; //sumem el temps de transmissio de la peticio assignada.
 		}
 	}
 
@@ -65,17 +77,17 @@ public class Estat {
 		Set<Integer> fileLocations0 = ser.fileLocations(fileId0);
 		int[] firstIt = cercaMin(fileLocations0,ser,fileId0,userId0);
 		int firstSer = firstIt[0];
-		peticions[0] = firstSer;
-		tempsServidors[firstSer] = firstIt[1];
+		mPeticions[0] = firstSer;
+		mTempsServidors[firstSer] = firstIt[1];
 		int maxTime = firstIt[1]; //Iniciem el temps màxim amb l'assignacio de la primera peticio.
 		for(int i = 1; i < req.size(); ++i){
 			int fileId = req.getRequest(i)[1];
 			int userId = req.getRequest(i)[0];
 			Set<Integer> fileLocations = ser.fileLocations(fileId);
 			int[] values = cercaPrimer(fileLocations,ser,fileId,userId,maxTime);
-			peticions[i] = values[0];
+			mPeticions[i] = values[0];
 			int serV = values[0];
-			tempsServidors[serV] += values[1];
+			mTempsServidors[serV] += values[1];
 			maxTime = values[2];
 		}
 	}
@@ -87,8 +99,8 @@ public class Estat {
 			int[] values = cercaMin(fileLocations,ser,fileId,userId);
 			int serAct = values[0];
 			int timeAct = values[1];
-			peticions[i] = serAct;
-			tempsServidors[serAct] = values[1];
+			mPeticions[i] = serAct;
+			mTempsServidors[serAct] = values[1];
 		}
 	}
 
@@ -97,11 +109,11 @@ public class Estat {
 	 * Inicialitza l'array de peticions i el de temps.
 	 */
 	private void initArrays(){
-		for(int i = 0; i < peticions.length; ++i){
-			peticions[i] = -1;
+		for(int i = 0; i < mPeticions.length; ++i){
+			mPeticions[i] = -1;
 		}
-		for(int i = 0; i < tempsServidors.length; ++i){
-			tempsServidors[i] = 0;
+		for(int i = 0; i < mTempsServidors.length; ++i){
+			mTempsServidors[i] = 0;
 		}
 	}
 
@@ -144,7 +156,7 @@ public class Estat {
 		int timeSerAux = Integer.MAX_VALUE;
 		for(Iterator it = fileLocations.iterator(); it.hasNext();){
 			int serAct = (int) it.next();
-			int timeSer = tempsServidors[serAct];
+			int timeSer = mTempsServidors[serAct];
 			int timeAct = ser.tranmissionTime(serAct,UserId);
 			if((timeAct + timeSer) <= tempsMax){
 				int[] retValues = new int[3];
@@ -174,12 +186,9 @@ public class Estat {
 	 * @return el temps total de transmissio del servidor sol·licitat.
 	 */
 	public int getTime(int idServer){
-		return tempsServidors[idServer];
+		return mTempsServidors[idServer];
 	}
-	/**
-	 *
-	 * @return el nombre de servidors.
-	 */
-	public int serversNum(){return tempsServidors.length;}
+
+
 
 }

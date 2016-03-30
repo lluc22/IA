@@ -51,6 +51,19 @@ public class Estat {
 	}
 
 
+	public boolean potAssignar (int pet, int serv, Requests req, Servers ser) {
+		int fileId = req.getRequest(pet)[1];
+		Set<Integer> fileLocations = ser.fileLocations(fileId);
+		int servId = fileLocations.iterator().next();
+		boolean found = false;
+		while (fileLocations.iterator().hasNext() && !found) {
+			if (serv == servId) found = true;
+			servId = fileLocations.iterator().next();
+		}
+		return found;
+	}
+
+
 	//Generadors de solucions inicials.
 	/**
 	 *

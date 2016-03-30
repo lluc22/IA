@@ -56,10 +56,9 @@ public class Estat {
 		Set<Integer> fileLocations = mServers.fileLocations(fileId);
 		int servId = fileLocations.iterator().next();
 		boolean found = false;
-		while (fileLocations.iterator().hasNext() && !found) {
-			if (serv == servId) found = true;
-			servId = fileLocations.iterator().next();
-		}
+		for(Iterator it = fileLocations.iterator(); it.hasNext() && !found;){
+				if (serv == (int)it.next()) found = true;
+			}
 		return found;
 	}
 

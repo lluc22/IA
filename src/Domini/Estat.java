@@ -8,7 +8,9 @@ import IA.DistFS.*;
 public class Estat {
 	public int[] peticions;
 	public int[] tempsServidors;
+	public Estat(){
 
+	}
 	public Estat(Requests req,Servers ser, int numGenIni){
 		peticions = new int[req.size()];
 		tempsServidors = new int[ser.size()];
@@ -36,6 +38,19 @@ public class Estat {
 		int aux = peticions[pet1];
 		peticions[pet1] = peticions[pet2];
 		peticions[pet2] = aux;
+	}
+
+
+	public boolean potAssignar (int pet, int serv, Requests req, Servers ser) {
+		int fileId = req.getRequest(pet)[1];
+		Set<Integer> fileLocations = ser.fileLocations(fileId);
+		int servId = fileLocations.iterator().next();
+		boolean found = false;
+		while (fileLocations.iterator().hasNext() && !found) {
+			if (serv == servId) found = true;
+			servId = fileLocations.iterator().next();
+		}
+		return found;
 	}
 
 

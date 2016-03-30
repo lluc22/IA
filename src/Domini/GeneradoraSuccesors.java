@@ -11,19 +11,34 @@ public class GeneradoraSuccesors implements SuccessorFunction {
     public List getSuccessors(Object o) {
         List retVal = new ArrayList();
         Estat actual = (Estat) o;
+        Heuristic heuristic = new Heuristic();
         for(int i = 0; i < actual.mRequests.size(); ++i){
             for(int j = 0; j < actual.mServers.size(); ++j){
-                Heuristic heuristic = new Heuristic();
-                Estat succesor1 = new Estat(actual.mRequests,actual.mServers,actual.mPeticions,actual.mTempsServidors);
-                Estat succesor2 = new Estat(actual.mRequests,actual.mServers,actual.mPeticions,actual.mTempsServidors);
-                double heur1 = heuristic.getHeuristicValue(succesor1);
-                double heur2 = heuristic.getHeuristicValue(succesor2);
-                succesor1.assigna(i,j);
-                succesor2.intercanvia(i,j);
-                String msg1 = "Assign server " + i + " to petition " + j + " with cost " + heur1;
-                String msg2 = "Swap server of petition " + i + " with server of petition " + j + " with cost " + heur2;
-                retVal.add(new Successor(msg1,succesor1));
-                retVal.add(new Successor(msg2,succesor2));
+
+                if(actual.potAssignar(i,j)) {
+                    Estat succesor1 = new Estat(actual.mRequests, actual.mServers, actual.mPeticions, actual.mTempsServidors);
+
+                    double heur1 = heuristic.getHeuristicValue(succesor1);
+
+                    succesor1.assigna(i, j);
+
+                    String msg1 = "Assign server " + i + " to petition " + j + " with cost " + heur1;
+
+                    retVal.add(new Successor(msg1, succesor1));
+
+                }
+            }
+        }
+
+        for(int i = 0; i < actual.mRequests.size(); ++i){
+            for(int j = i + 1; j < actual.mRequests.size(); ++j){
+                if(actual.potAssignar(i,actual.mPeticions[j]) && actual.potAssignar(j,actual.mPeticions[i])) {
+                    Estat succesor2 = new Estat(actual.mRequests, actual.mServers, actual.mPeticions, actual.mTempsServidors);
+                    double heur2 = heuristic.getHeuristicValue(succesor2);
+                    succesor2.intercanvia(i, j);
+                    String msg2 = "Swap server of petition " + i + " with server of petition " + j + " with cost " + heur2;
+                    retVal.add(new Successor(msg2, succesor2));
+                }
             }
         }
 

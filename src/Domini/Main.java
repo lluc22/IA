@@ -65,6 +65,10 @@ public class Main {
 					for(int i = 0; i < estat.mTempsServidors.length; ++i){
 						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
 					}
+
+					System.out.println("Temps total: " + Heuristic.getSum(estat));
+					System.out.println("Temps màxim: " + Heuristic.getMax(estat));
+					System.out.println("SD: " + Heuristic.getSD(estat));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -86,6 +90,9 @@ public class Main {
 					for(int i = 0; i < estat.mTempsServidors.length; ++i){
 						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
 					}
+					System.out.println("Temps total: " + Heuristic.getSum(estat));
+					System.out.println("Temps màxim: " + Heuristic.getMax(estat));
+					System.out.println("SD: " + Heuristic.getSD(estat));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

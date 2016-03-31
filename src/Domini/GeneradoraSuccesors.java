@@ -22,7 +22,7 @@ public class GeneradoraSuccesors implements SuccessorFunction {
 
                     succesor1.assigna(i, j);
 
-                    String msg1 = "Assign server " + i + " to petition " + j + " with cost " + heur1;
+                    String msg1 = "Assign server " + j + " to petition " + i + " with cost " + heur1;
 
                     retVal.add(new Successor(msg1, succesor1));
 

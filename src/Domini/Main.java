@@ -8,10 +8,7 @@ import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -27,6 +24,7 @@ public class Main {
 		int request = sc.nextInt();
 		int seed = sc.nextInt();
 		int initial = sc.nextInt();
+
 		Servers servers = null;
 		Requests requests = new Requests(users,request,seed);
 		try {
@@ -35,7 +33,16 @@ public class Main {
 		} catch (WrongParametersException e) {
 			e.printStackTrace();
 		}
+		System.out.println("peticions "+ requests.size());
+		System.out.println("servidors "+ servers.size());
+
+
+
 		Estat initialState = initialState = new Estat(requests,servers,initial);
+		System.out.println("Temps totals dels servidors:");
+		for(int i = 0; i < 10; ++i){
+			System.out.println("Servidor: " + i + " Temps total: " + initialState.mTempsServidors[i]);
+		}
 		Problem hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic());
 		Problem simulatedAnnealing = new Problem(initialState,new GeneradoraSuccesorsSA(),new EstatFinal(),new Heuristic());
 		Search hillClimbingSearch = new HillClimbingSearch();
@@ -47,6 +54,16 @@ public class Main {
 					searchAgent = new SearchAgent(hillClimbing,hillClimbingSearch);
 					printActions(searchAgent.getActions());
 					printInstrumentation(searchAgent.getInstrumentation());
+					Estat estat = (Estat) hillClimbingSearch.getGoalState();
+					System.out.println("numero servidors: " + estat.mServers.size());
+					System.out.println("Peticions:");
+					for(int i = 0; i < estat.mPeticions.length; ++i){
+						System.out.println("Nº pet: " + i + " Servidor: " + estat.mPeticions[i]);
+					}
+					System.out.println("Temps totals dels servidors:");
+					for(int i = 0; i < 10; ++i){
+						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

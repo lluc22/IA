@@ -54,7 +54,6 @@ public class Estat {
 	public boolean potAssignar (int pet, int serv) {
 		int fileId = mRequests.getRequest(pet)[1];
 		Set<Integer> fileLocations = mServers.fileLocations(fileId);
-		int servId = fileLocations.iterator().next();
 		int sO = mPeticions[pet];
 		if(sO == serv) return false;
 		boolean found = false;
@@ -167,11 +166,12 @@ public class Estat {
 	private int[] cercaPrimer(Set<Integer> fileLocations,Servers ser, int fileId,int UserId, int tempsMax){
 		int tempsAux = Integer.MAX_VALUE;
 		int serAux = -1;
+		int timeAct = 0;
 		int timeSerAux = Integer.MAX_VALUE;
 		for(Iterator it = fileLocations.iterator(); it.hasNext();){
 			int serAct = (int) it.next();
 			int timeSer = mTempsServidors[serAct];
-			int timeAct = ser.tranmissionTime(serAct,UserId);
+			timeAct = ser.tranmissionTime(serAct,UserId);
 			if((timeAct + timeSer) <= tempsMax){
 				int[] retValues = new int[3];
 				retValues[0] = serAct;
@@ -181,7 +181,7 @@ public class Estat {
 			}
 			else{
 					if((timeAct + timeSer) < tempsAux) {
-						timeSerAux = timeSer;
+						timeSerAux = timeAct;
 						tempsAux = timeAct + timeSer;
 						serAux = serAct;
 					}

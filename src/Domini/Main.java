@@ -25,6 +25,8 @@ public class Main {
 		int seed = sc.nextInt();
 		int initial = sc.nextInt();
 
+		long startTime = System.currentTimeMillis();
+
 		Servers servers = null;
 		Requests requests = new Requests(users,request,seed);
 		try {
@@ -56,7 +58,7 @@ public class Main {
 					printActions(searchAgent.getActions());
 					printInstrumentation(searchAgent.getInstrumentation());
 					Estat estat = (Estat) hillClimbingSearch.getGoalState();
-					System.out.println("numero servidors: " + estat.mServers.size());
+					System.out.println("numero servidors: " + estat.mTempsServidors.length);
 					System.out.println("Peticions:");
 					for(int i = 0; i < estat.mPeticions.length; ++i){
 						System.out.println("Nº pet: " + i + " Servidor: " + estat.mPeticions[i]);
@@ -81,7 +83,7 @@ public class Main {
 					//printActions(searchAgent.getActions());
 					printInstrumentation(searchAgent.getInstrumentation());
 					Estat estat = (Estat) simulatedAnnealingSearch.getGoalState();
-					System.out.println("numero servidors: " + estat.mServers.size());
+					System.out.println("numero servidors: " + estat.mTempsServidors.length);
 					System.out.println("Peticions:");
 					for(int i = 0; i < estat.mPeticions.length; ++i){
 						System.out.println("Nº pet: " + i + " Servidor: " + estat.mPeticions[i]);
@@ -100,6 +102,7 @@ public class Main {
 			default:
 				//Error
 		}
+		long estimatedTime = System.currentTimeMillis() - startTime;
 
 
 

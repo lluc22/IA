@@ -26,9 +26,19 @@ public class GeneradoraSuccesorsSA  implements SuccessorFunction{
                     double heur1 = heuristic.getHeuristicValue(succesor1);
                     String msg1 = "Assign server " + ser + " to petition " + pet + " with cost " + heur1;
                     retVal.add(new Successor(msg1, succesor1));
+                    aplicat = true;
                 }
             } else {
-
+                int pet1 = random.nextInt(actual.mPeticions.length);
+                int pet2 = random.nextInt(actual.mPeticions.length);
+                if (actual.potAssignar(pet1, actual.mPeticions[pet2]) && actual.potAssignar(pet2, actual.mPeticions[pet1])) {
+                    Estat succesor2 = new Estat(actual.mRequests, actual.mServers, actual.mPeticions, actual.mTempsServidors);
+                    double heur2 = heuristic.getHeuristicValue(succesor2);
+                    succesor2.intercanvia(pet1, pet2);
+                    String msg2 = "Swap server of petition " + pet1 + " with server of petition " + pet2 + " with cost " + heur2;
+                    retVal.add(new Successor(msg2, succesor2));
+                    aplicat = true;
+                }
             }
         }
         return retVal;

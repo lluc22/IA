@@ -34,13 +34,13 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.println("peticions "+ requests.size());
-		System.out.println("servidors "+ servers.size());
 
 
 
-		Estat initialState = initialState = new Estat(requests,servers,initial);
+		Estat initialState = initialState = new Estat(requests,servers,initial,nserv);
+		System.out.println("numero servidors: "+ initialState.mTempsServidors.length);
 		System.out.println("Temps totals dels servidors:");
-		for(int i = 0; i < 10; ++i){
+		for(int i = 0; i < initialState.mTempsServidors.length; ++i){
 			System.out.println("Servidor: " + i + " Temps total: " + initialState.mTempsServidors[i]);
 		}
 		Problem hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic());
@@ -61,7 +61,7 @@ public class Main {
 						System.out.println("Nº pet: " + i + " Servidor: " + estat.mPeticions[i]);
 					}
 					System.out.println("Temps totals dels servidors:");
-					for(int i = 0; i < 10; ++i){
+					for(int i = 0; i < estat.mTempsServidors.length; ++i){
 						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
 					}
 				} catch (Exception e) {

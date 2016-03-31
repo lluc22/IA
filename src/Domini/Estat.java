@@ -11,11 +11,11 @@ public class Estat {
 	public Requests mRequests;
 	public Servers mServers;
 
-	public Estat(Requests requests,Servers servers, int numGenIni){
+	public Estat(Requests requests,Servers servers, int numGenIni, int nserv){
 		mRequests = requests;
 		mServers = servers;
 		mPeticions = new int[mRequests.size()];
-		mTempsServidors = new int[mServers.size()];
+		mTempsServidors = new int[nserv];
 		initArrays();
 		if(numGenIni == 1){generaSolNaif(mRequests, mServers);}
 		else if(numGenIni == 2) {generarSolMaxTime(mRequests, mServers);}

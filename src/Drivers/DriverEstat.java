@@ -33,7 +33,7 @@ public class DriverEstat {
                 switch (id){
                     case 1: System.out.println("Introdueix l'identificador de solucio inicial:");
                         int idSol = in.nextInt();
-                        estat = new Estat(req,ser,idSol);
+                        estat = new Estat(req,ser,idSol,10);
                         System.out.println("numero servidors: " + ser.size());
                         System.out.println("Peticions:");
                         for(int i = 0; i < estat.mPeticions.length; ++i){

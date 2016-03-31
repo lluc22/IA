@@ -46,12 +46,13 @@ public class Main {
 		Problem hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic());
 		Problem simulatedAnnealing = new Problem(initialState,new GeneradoraSuccesorsSA(),new EstatFinal(),new Heuristic());
 		Search hillClimbingSearch = new HillClimbingSearch();
-		Search simulatedAnnealingSearch = new SimulatedAnnealingSearch();
+		Search simulatedAnnealingSearch = new SimulatedAnnealingSearch(2000,100,5,0.001);
 		SearchAgent searchAgent = null;
 		switch (problem){
 			case 0:
 				try {
 					searchAgent = new SearchAgent(hillClimbing,hillClimbingSearch);
+					System.out.println(searchAgent.getActions());
 					printActions(searchAgent.getActions());
 					printInstrumentation(searchAgent.getInstrumentation());
 					Estat estat = (Estat) hillClimbingSearch.getGoalState();
@@ -72,8 +73,19 @@ public class Main {
 			case 1:
 				try {
 					searchAgent = new SearchAgent(simulatedAnnealing,simulatedAnnealingSearch);
-					printActions(searchAgent.getActions());
+					System.out.println(searchAgent.getActions());
+					//printActions(searchAgent.getActions());
 					printInstrumentation(searchAgent.getInstrumentation());
+					Estat estat = (Estat) simulatedAnnealingSearch.getGoalState();
+					System.out.println("numero servidors: " + estat.mServers.size());
+					System.out.println("Peticions:");
+					for(int i = 0; i < estat.mPeticions.length; ++i){
+						System.out.println("Nº pet: " + i + " Servidor: " + estat.mPeticions[i]);
+					}
+					System.out.println("Temps totals dels servidors:");
+					for(int i = 0; i < estat.mTempsServidors.length; ++i){
+						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

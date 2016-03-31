@@ -9,7 +9,7 @@ public class Heuristic  implements HeuristicFunction{
     public double getHeuristicValue(Object o) {
         double p_sd = 0.5;
         Estat state = (Estat) o;
-        int n = state.mServers.size();
+        int n = state.mTempsServidors.length;
         double mean = 0.0;
         double max = 0.0;
         double M2 = 0.0;

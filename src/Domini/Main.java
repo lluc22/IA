@@ -35,18 +35,22 @@ public class Main {
 		} catch (WrongParametersException e) {
 			e.printStackTrace();
 		}
-		System.out.println("peticions "+ requests.size());
+		//System.out.println("peticions "+ requests.size());
 
 
 
 		Estat initialState = initialState = new Estat(requests,servers,initial,nserv);
-		System.out.println("numero servidors: "+ initialState.mTempsServidors.length);
-		System.out.println("Temps totals dels servidors:");
+		//System.out.println("numero servidors: "+ initialState.mTempsServidors.length);
+		//System.out.println("Temps total: " + Heuristic2.getSum(initialState));
+		int tmax = 0;
+		/*System.out.println("Temps totals dels servidors:");
 		for(int i = 0; i < initialState.mTempsServidors.length; ++i){
 			System.out.println("Servidor: " + i + " Temps total: " + initialState.mTempsServidors[i]);
+			if (initialState.mTempsServidors[i] > tmax) tmax = initialState.mTempsServidors[i];
 		}
-		Problem hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic());
-		Problem simulatedAnnealing = new Problem(initialState,new GeneradoraSuccesorsSA(),new EstatFinal(),new Heuristic());
+		System.out.println("Temps max inici: " + tmax);*/
+		Problem hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic2());
+		Problem simulatedAnnealing = new Problem(initialState,new GeneradoraSuccesorsSA(),new EstatFinal(),new Heuristic2());
 		Search hillClimbingSearch = new HillClimbingSearch();
 		Search simulatedAnnealingSearch = new SimulatedAnnealingSearch(2000,100,5,0.001);
 		SearchAgent searchAgent = null;
@@ -54,11 +58,11 @@ public class Main {
 			case 0:
 				try {
 					searchAgent = new SearchAgent(hillClimbing,hillClimbingSearch);
-					System.out.println(searchAgent.getActions());
-					printActions(searchAgent.getActions());
-					printInstrumentation(searchAgent.getInstrumentation());
+					//System.out.println(searchAgent.getActions());
+					//printActions(searchAgent.getActions());
+					//printInstrumentation(searchAgent.getInstrumentation());
 					Estat estat = (Estat) hillClimbingSearch.getGoalState();
-					System.out.println("numero servidors: " + estat.mTempsServidors.length);
+					/*System.out.println("numero servidors: " + estat.mTempsServidors.length);
 					System.out.println("Peticions:");
 					for(int i = 0; i < estat.mPeticions.length; ++i){
 						System.out.println("Nº pet: " + i + " Servidor: " + estat.mPeticions[i]);
@@ -66,11 +70,17 @@ public class Main {
 					System.out.println("Temps totals dels servidors:");
 					for(int i = 0; i < estat.mTempsServidors.length; ++i){
 						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
+					}*/
+					int tmaxx = 0;
+					/*for(int i = 0; i < estat.mTempsServidors.length; ++i){
+						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
+						if (estat.mTempsServidors[i] > tmaxx) tmaxx = estat.mTempsServidors[i];
 					}
-
-					System.out.println("Temps total: " + Heuristic.getSum(estat));
-					System.out.println("Temps màxim: " + Heuristic.getMax(estat));
-					System.out.println("SD: " + Heuristic.getSD(estat));
+					System.out.println("Temps max final: " + tmaxx);*/
+					System.out.println("Temps total: " + Heuristic2.getSum(estat));
+					//System.out.println("SD: " + Heuristic.getSD(estat));
+					//System.out.println("Temps màxim: " + Heuristic2.getMax(estat));
+					//System.out.println("SD: " + Heuristic.getSD(estat));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -92,8 +102,8 @@ public class Main {
 					for(int i = 0; i < estat.mTempsServidors.length; ++i){
 						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
 					}
-					System.out.println("Temps total: " + Heuristic.getSum(estat));
-					System.out.println("Temps màxim: " + Heuristic.getMax(estat));
+					System.out.println("Temps total: " + Heuristic2.getSum(estat));
+					System.out.println("Temps màxim: " + Heuristic2.getMax(estat));
 					System.out.println("SD: " + Heuristic.getSD(estat));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -103,6 +113,8 @@ public class Main {
 				//Error
 		}
 		long estimatedTime = System.currentTimeMillis() - startTime;
+		System.out.println("Temps (ms) : " + estimatedTime);
+
 
 
 

@@ -6,8 +6,6 @@ import java.util.Arrays;
 
 public class Heuristic  implements HeuristicFunction{
 
-
-
     @Override
     public double getHeuristicValue(Object o) {
         Estat state = (Estat) o;
@@ -20,7 +18,7 @@ public class Heuristic  implements HeuristicFunction{
         double m = 0;
         for(int i = 0; i < n ; ++i) {
             m+=1;
-            double t = state.getTime(i);
+            double t = state.mTempsServidors[i];
             if(t > max) max = t;
             sum =sum + t;
             double delta = t - mean;
@@ -29,7 +27,7 @@ public class Heuristic  implements HeuristicFunction{
         }
         if (m < 2) sd = Double.NaN;
         else sd =  Math.sqrt(M2 / (m - 1));
-        return sd + sum + max;
+        return max;
     }
 
     static public double getSD(Object o) {
@@ -41,7 +39,7 @@ public class Heuristic  implements HeuristicFunction{
         double m = 0;
         for(int i = 0; i < n ; ++i) {
             m+=1;
-            double t = state.getTime(i);
+            double t = state.mTempsServidors[i];
             double delta = t - mean;
             mean += delta / m;
             M2 += delta * (t - mean);
@@ -56,7 +54,7 @@ public class Heuristic  implements HeuristicFunction{
         int n = state.mTempsServidors.length;
         double max = 0.0;
         for(int i = 1; i <= n ; ++i) {
-            double t = state.getTime(i - 1);
+            double t = state.mTempsServidors[i-1];
             if(t > max) max = t;
         }
         return max;
@@ -67,8 +65,8 @@ public class Heuristic  implements HeuristicFunction{
         int n = state.mTempsServidors.length;
         double sum = 0.0;
         for(int i = 1; i <= n ; ++i) {
-            double t = state.getTime(i - 1);
-            sum =sum + t;
+            double t = state.mTempsServidors[i-1];
+            sum += t;
         }
         return sum;
     }

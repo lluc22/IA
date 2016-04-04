@@ -16,7 +16,7 @@ public class Estat {
 		mServers = servers;
 		mPeticions = new int[mRequests.size()];
 		mTempsServidors = new int[nserv];
-		initArrays();
+		//initArrays();
 		if(numGenIni == 1){generaSolNaif(mRequests, mServers);}
 		else if(numGenIni == 2) {generarSolMaxTime(mRequests, mServers);}
 		else if(numGenIni == 3) {generarSolMinTime(mRequests, mServers);}
@@ -88,7 +88,7 @@ public class Estat {
 		int fileId0 = req.getRequest(0)[1];
 		int userId0 = req.getRequest(0)[0];
 		Set<Integer> fileLocations0 = ser.fileLocations(fileId0);
-		int[] firstIt = cercaMin(fileLocations0,ser,fileId0,userId0);
+		int[] firstIt = cercaMin(fileLocations0,ser,userId0);
 		int firstSer = firstIt[0];
 		mPeticions[0] = firstSer;
 		mTempsServidors[firstSer] = firstIt[1];
@@ -106,14 +106,9 @@ public class Estat {
 	}
 	private void generarSolMinTime(Requests req, Servers ser){
 		for(int i = 0; i < req.size(); ++i){
-			int fileId = req.getRequest(i)[1];
-			int userId = req.getRequest(i)[0];
-			Set<Integer> fileLocations = ser.fileLocations(fileId);
-			int[] values = cercaMin(fileLocations,ser,fileId,userId);
-			int serAct = values[0];
-			int timeAct = values[1];
-			mPeticions[i] = serAct;
-			mTempsServidors[serAct] = values[1];
+			int[] values = cercaMin(ser.fileLocations(req.getRequest(i)[1]),ser,req.getRequest(i)[0]);
+			mPeticions[i] = values[0];
+			mTempsServidors[values[0]] += values[1];
 		}
 	}
 
@@ -134,10 +129,9 @@ public class Estat {
 	 *
 	 * @param fileLocations
 	 * @param ser
-	 * @param fileId
      * @return un parell on el primer és el temps minim i l'altre el servidor més proper.
      */
-	private int[] cercaMin(Set<Integer> fileLocations, Servers ser, int fileId, int UserId){
+	private int[] cercaMin(Set<Integer> fileLocations, Servers ser, int UserId){
 		int minTime = Integer.MAX_VALUE;
 		int serMin = -1;
 		for(Iterator it = fileLocations.iterator(); it.hasNext();){
@@ -199,9 +193,9 @@ public class Estat {
 	 * @param idServer id del servidor sol·licitat.
 	 * @return el temps total de transmissio del servidor sol·licitat.
 	 */
-	public int getTime(int idServer){
+	/*public int getTime(int idServer){
 		return mTempsServidors[idServer];
-	}
+	}*/
 
 
 

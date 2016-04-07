@@ -1,0 +1,2 @@
+javac src/Domini/*.java -d bin/ -classpath lib/AIMA.jar:lib/DistribFileSystem.jar
+java -classpath bin:lib/AIMA.jar:lib/DistribFileSystem.jar Domini.Main

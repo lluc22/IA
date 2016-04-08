@@ -8,7 +8,11 @@ public class Heuristic  implements HeuristicFunction{
 
     @Override
     public double getHeuristicValue(Object o) {
-        Estat state = (Estat) o;
+        Estat estat = (Estat) o;
+        return getHeuristic(estat);
+    }
+
+    static public double getHeuristic(Estat state){
         int n = state.mTempsServidors.length;
         double mean = 0.0;
         double max = 0.0;
@@ -27,7 +31,7 @@ public class Heuristic  implements HeuristicFunction{
         }
         if (m < 2) sd = Double.NaN;
         else sd =  Math.sqrt(M2 / (m - 1));
-        return max;
+        return sd + max;
     }
 
     static public double getSD(Object o) {

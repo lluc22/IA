@@ -56,8 +56,8 @@ public class DriverExp4 {
                 }
                 PrintStream out = new PrintStream(new FileOutputStream("outputUsers.txt"));
                 System.setOut(out);
-                System.out.printf("%-30.30s  %-30.30s%n", "Usuaris", "Temps");
-                for(int i = 0; i < tempsRep.length; ++i) System.out.printf("%-30.30s  %-30.30s%n", (100 + i*100), tempsRep[i]/rep);
+                System.out.printf("Usuaris" + "\t" + "Temps");
+                for(int i = 0; i < tempsRep.length; ++i) System.out.printf((100 + i*100) +"\t" + tempsRep[i]/rep);
                 break;
             case 2:
                 System.out.print("Nombre d'iteracions: ");
@@ -87,8 +87,8 @@ public class DriverExp4 {
                 }
                 PrintStream out2 = new PrintStream(new FileOutputStream("outputServ.txt"));
                 System.setOut(out2);
-                System.out.printf("%-30.30s  %-30.30s%n", "Servidors", "Temps");
-                for(int i = 0; i < tempsRep2.length; ++i) System.out.printf("%-30.30s  %-30.30s%n", (50 + i*50), tempsRep2[i]/rep2);
+                System.out.printf("Servidors" + "\t" + "Temps");
+                for(int i = 0; i < tempsRep2.length; ++i) System.out.printf((50 + i*50) + "\t" + tempsRep2[i]/rep2);
                 break;
             case -1: System.exit(0);
         }

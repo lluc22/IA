@@ -11,6 +11,8 @@ import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -52,7 +54,10 @@ public class DriverExp4 {
                         users += 100;
                     }
                 }
-                for(int i = 0; i < tempsRep.length; ++i) System.out.println("Temps mitjà(" + (100 + i*100) + "): " + tempsRep[i]/rep);
+                PrintStream out = new PrintStream(new FileOutputStream("outputUsers.txt"));
+                System.setOut(out);
+                System.out.printf("Usuaris" + "\t" + "Temps");
+                for(int i = 0; i < tempsRep.length; ++i) System.out.printf((100 + i*100) +"\t" + tempsRep[i]/rep);
                 break;
             case 2:
                 System.out.print("Nombre d'iteracions: ");
@@ -80,7 +85,10 @@ public class DriverExp4 {
                         servers += 50;
                     }
                 }
-                for(int i = 0; i < tempsRep2.length; ++i) System.out.println("Temps mitjà(" + (100 + i*50) + "): " + tempsRep2[i]/rep2);
+                PrintStream out2 = new PrintStream(new FileOutputStream("outputServ.txt"));
+                System.setOut(out2);
+                System.out.printf("Servidors" + "\t" + "Temps");
+                for(int i = 0; i < tempsRep2.length; ++i) System.out.printf((50 + i*50) + "\t" + tempsRep2[i]/rep2);
                 break;
             case -1: System.exit(0);
         }

@@ -29,7 +29,7 @@ public class GeneradoraSuccesors implements SuccessorFunction {
                 }
             }
         }
-/*
+
         for(int i = 0; i < actual.mRequests.size(); ++i){
             for(int j = i + 1; j < actual.mRequests.size(); ++j){
                 if(actual.potAssignar(i,actual.mPeticions[j]) && actual.potAssignar(j,actual.mPeticions[i])) {
@@ -40,7 +40,7 @@ public class GeneradoraSuccesors implements SuccessorFunction {
                     retVal.add(new Successor(msg2, succesor2));
                 }
             }
-        }*/
+        }
 
 
         return retVal;

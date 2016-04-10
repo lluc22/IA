@@ -24,7 +24,7 @@ public class ExpSA {
         int steps = 1000000;
         int stiter = 1000;
         int k = 5;
-        double lamb = 0.1;
+        double lamb = 0.001;
         Requests requests = new Requests(users,request,seed);
         Servers servers = null;
         try {
@@ -34,7 +34,7 @@ public class ExpSA {
         }
 
         Estat initialState = initialState = new Estat(requests,servers,initial,nserv);
-        System.out.println(Heuristic.getMax(initialState));
+        System.out.println(Heuristic2.getMax(initialState));
         Problem simulatedAnnealing = new Problem(initialState,new GeneradoraSuccesorsSA(),new EstatFinal(),new Heuristic2());
         Problem hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic2());
         Search hillClimbingSearch = new HillClimbingSearch();
@@ -55,8 +55,8 @@ public class ExpSA {
 
         Estat HCState = (Estat) hillClimbingSearch.getGoalState();
         Estat SAState = (Estat) simulatedAnnealingSearch.getGoalState();
-        System.out.println("Hill Climbing: " + Heuristic.getMax(HCState));
-        System.out.println("Simulated Anealling: " + Heuristic.getMax(SAState));
+        System.out.println("Hill Climbing: " + Heuristic2.getMax(HCState));
+        System.out.println("Simulated Anealling: " + Heuristic2.getMax(SAState));
 
         int step = 0;
         XYSeries series = new XYSeries("");

@@ -28,14 +28,14 @@ public class DriverExp1 {
                 56, 29, 19, 50,  1, 87, 85, 99, 30, 28, 15, 44, 37, 14};
         int initial = 3;
 
-        /*PrintStream out2 = null;
+        PrintStream out2 = null;
         try {
-            out2 = new PrintStream(new FileOutputStream("exp1.txt"));
+            out2 = new PrintStream(new FileOutputStream("exp2-3.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.setOut(out2);*/
-        System.out.println("Heuristic" + "\t" + "Max Time"+ "\t" +"SD"+ "\t" +"Time");
+        System.setOut(out2);
+        System.out.println("Heuristic" + "\t" + "Max Time"+ "\t" +"SD"+ "\t" +"Time" + "\t" + "Generation Time");
         for(int i = 0; i < nre_experiments; ++i){
 
 
@@ -48,7 +48,9 @@ public class DriverExp1 {
                 e.printStackTrace();
             }
             long startTime = System.currentTimeMillis();
+            long startGeneration = System.currentTimeMillis();
             Estat initialState = initialState = new Estat(requests,servers,initial,nserv);
+            long generationTime = System.currentTimeMillis() - startGeneration;
             Problem hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic2());
             Problem simulatedAnnealing = new Problem(initialState,new GeneradoraSuccesorsSA(),new EstatFinal(),new Heuristic2());
             Search hillClimbingSearch = new HillClimbingSearch();
@@ -60,7 +62,7 @@ public class DriverExp1 {
                         searchAgent = new SearchAgent(hillClimbing, hillClimbingSearch);
                         Estat estat = (Estat) hillClimbingSearch.getGoalState();
                         long estimatedTime = System.currentTimeMillis() - startTime;
-                        System.out.println(Heuristic2.getMax(estat)+ "\t" + Heuristic.getMax(estat)+ "\t" +Heuristic.getSD(estat)+ "\t" +estimatedTime);
+                        System.out.println(Heuristic2.getMax(estat)+ "\t" + Heuristic2.getMax(estat)+ "\t" +Heuristic.getSD(estat)+ "\t" +estimatedTime + "\t" + generationTime);
 
 
                     } catch (Exception e) {
@@ -75,7 +77,7 @@ public class DriverExp1 {
                         searchAgent = new SearchAgent(simulatedAnnealing, simulatedAnnealingSearch);
                         Estat estat = (Estat) simulatedAnnealingSearch.getGoalState();
                         long estimatedTime = System.currentTimeMillis() - startTime;
-                        System.out.println(Heuristic2.getMax(estat)+ "\t" + Heuristic.getMax(estat)+ "\t" +Heuristic.getSD(estat)+ "\t" +estimatedTime);
+                        System.out.println(Heuristic2.getMax(estat)+ "\t" + Heuristic2.getMax(estat)+ "\t" +Heuristic.getSD(estat)+ "\t" +estimatedTime);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

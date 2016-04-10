@@ -29,7 +29,7 @@ public class Heuristic  implements HeuristicFunction{
         }
         if (m < 2) sd = Double.NaN;
         else sd =  Math.sqrt(M2 / (m - 1));
-        return sum + sd;
+        return sum + sd*sd;
     }
 
     static public double getSD(Object o) {

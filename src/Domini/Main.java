@@ -17,69 +17,96 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		int problem = sc.nextInt();
-		int nserv = sc.nextInt();
-		int nrep = sc.nextInt();
-		int users = sc.nextInt();
-		int request = sc.nextInt();
-		int seed = sc.nextInt();
-		int initial = sc.nextInt();
+		int problem;
+		int nserv;
+		int nrep;
+		int users;
+		int request;
+		int seed;
+		int initial;
+		int heuristic;
+		System.out.println("Entra en aquest ordre:");
+		System.out.println("1) Nombre de servidors");
+		System.out.println("2) Nombre de replicacions mínim per fitxer");
+		System.out.println("3) Nombre d'usuaris");
+		System.out.println("4) Nombre de peticions màximes per usuari");
+		System.out.println("5) Llavor per a l'aletorietat");
+		System.out.println("6) Solució inicial a triar: NAIF, BALANCED i NEAR  ( 0 / 1 / 2 )");
+		System.out.println("7) Heurístic a triar: criteri 1 o Criteri 2 ( 1 / 2 )");
+		System.out.println("8) Hill Climbing (0) o Simullated Annealing (1)  (0 / 1)");
+		nserv = sc.nextInt();
+		nrep = sc.nextInt();
+		users = sc.nextInt();
+		request = sc.nextInt();
+		seed = sc.nextInt();
+		while(true) {
+			initial = sc.nextInt();
+			if (initial != 0 && initial != 1 && initial != 2)
+				System.out.println("Error.Solució inicial a triar: NAIF, BALANCED i NEAR  ( 0 / 1 / 2 )");
+			else break;
+		}
+		while(true) {
+			heuristic = sc.nextInt();
+			if (heuristic != 1 && heuristic != 2)
+				System.out.println("Error.Heurístic a triar: criteri 1 o Criteri 2 ( 1 / 2 )");
+			else break;
+		}
+
+		while(true) {
+			problem = sc.nextInt();
+			if (problem != 0 && problem != 1)
+				System.out.println("Error.Hill Climbing (0) o Simullated Annealing (1)  (0 / 1)");
+			else break;
+		}
+
 
 		long startTime = System.currentTimeMillis();
 
 		Servers servers = null;
 		Requests requests = new Requests(users,request,seed);
-		try {
-			servers = new Servers(nserv,nrep,seed);
 
-		} catch (WrongParametersException e) {
-			e.printStackTrace();
+		while(true) {
+			try {
+				servers = new Servers(nserv, nrep, seed);
+				break;
+			} catch (WrongParametersException e) {
+				System.out.println("Error! Entra els paràmetres un altre cop en aquest ordre:");
+				System.out.println("1) Nombre de servidors");
+				System.out.println("2) Nombre de replicacions mínim per fitxer");
+				System.out.println("3) Llavor per a l'aletorietat");
+				nserv = sc.nextInt();
+				nrep = sc.nextInt();
+				seed = sc.nextInt();
+
+			}
 		}
-		System.out.println("peticions "+ requests.size());
 
 
+		Estat initialState = initialState = new Estat(requests,servers,initial - 1,nserv);
 
-		Estat initialState = initialState = new Estat(requests,servers,initial,nserv);
-		System.out.println("numero servidors: "+ initialState.mTempsServidors.length);
-		System.out.println("Temps total: " + Heuristic2.getSum(initialState));
-		int tmax = 0;
-		System.out.println("Temps totals dels servidors:");
-		for(int i = 0; i < initialState.mTempsServidors.length; ++i){
-			System.out.println("Servidor: " + i + " Temps total: " + initialState.mTempsServidors[i]);
-			if (initialState.mTempsServidors[i] > tmax) tmax = initialState.mTempsServidors[i];
-		}
-		System.out.println("Temps max inici: " + tmax);
-		Problem hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic());
-		Problem simulatedAnnealing = new Problem(initialState,new GeneradoraSuccesorsSA(),new EstatFinal(),new Heuristic2());
+
+		Problem hillClimbing;
+		if(heuristic == 1) hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic2());
+		else hillClimbing = new Problem(initialState,new GeneradoraSuccesors(),new EstatFinal(),new Heuristic());
+		Problem simulatedAnnealing;
+		if(heuristic == 1) simulatedAnnealing= new Problem(initialState,new GeneradoraSuccesorsSA(),new EstatFinal(),new Heuristic2());
+		else simulatedAnnealing = new Problem(initialState,new GeneradoraSuccesorsSA(),new EstatFinal(),new Heuristic());
 		Search hillClimbingSearch = new HillClimbingSearch();
-		Search simulatedAnnealingSearch = new SimulatedAnnealingSearch(2000,100,5,0.001);
 		SearchAgent searchAgent = null;
+		double valor_heurstic;
 		switch (problem){
 			case 0:
 				try {
 					searchAgent = new SearchAgent(hillClimbing,hillClimbingSearch);
-					System.out.println(searchAgent.getActions());
 					printActions(searchAgent.getActions());
 					printInstrumentation(searchAgent.getInstrumentation());
 					Estat estat = (Estat) hillClimbingSearch.getGoalState();
-					System.out.println("numero servidors: " + estat.mTempsServidors.length);
-					System.out.println("Peticions:");
-					for(int i = 0; i < estat.mPeticions.length; ++i){
-						System.out.println("Nº pet: " + i + " Servidor: " + estat.mPeticions[i]);
-					}
-					System.out.println("Temps totals dels servidors:");
-					for(int i = 0; i < estat.mTempsServidors.length; ++i){
-						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
-					}
-					int tmaxx = 0;
-					for(int i = 0; i < estat.mTempsServidors.length; ++i){
-						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
-						if (estat.mTempsServidors[i] > tmaxx) tmaxx = estat.mTempsServidors[i];
-					}
-					System.out.println("Temps max final: " + tmaxx);
+					if(heuristic ==1) valor_heurstic = Heuristic2.getMax(estat);
+					else valor_heurstic = Heuristic.getHeuristic(estat);
 					System.out.println("Temps total: " + Heuristic2.getSum(estat));
 					System.out.println("Temps màxim: " + Heuristic2.getMax(estat));
-					System.out.println("SD: " + Heuristic.getSD(estat));
+					System.out.println("Standard Deviation: " + Heuristic.getSD(estat));
+					System.out.println("Valor Heurístic: " + valor_heurstic);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -87,29 +114,32 @@ public class Main {
 				break;
 			case 1:
 				try {
+
+					System.out.println("Entra en aquest ordre:");
+					System.out.println("1) nombre de passos");
+					System.out.println("2) iteracions per pas");
+					System.out.println("3) k");
+					System.out.println("4) lambda");
+					int steps = sc.nextInt();
+					int niter= sc.nextInt();
+					int k= sc.nextInt();
+					double lambda= sc.nextDouble();
+					Search simulatedAnnealingSearch = new SimulatedAnnealingSearch(steps,niter,k,lambda);
 					searchAgent = new SearchAgent(simulatedAnnealing,simulatedAnnealingSearch);
-					System.out.println(searchAgent.getActions());
-					//printActions(searchAgent.getActions());
 					printInstrumentation(searchAgent.getInstrumentation());
 					Estat estat = (Estat) simulatedAnnealingSearch.getGoalState();
-					System.out.println("numero servidors: " + estat.mTempsServidors.length);
-					System.out.println("Peticions:");
-					for(int i = 0; i < estat.mPeticions.length; ++i){
-						System.out.println("Nº pet: " + i + " Servidor: " + estat.mPeticions[i]);
-					}
-					System.out.println("Temps totals dels servidors:");
-					for(int i = 0; i < estat.mTempsServidors.length; ++i){
-						System.out.println("Servidor: " + i + " Temps total: " + estat.mTempsServidors[i]);
-					}
+					if(heuristic ==1) valor_heurstic = Heuristic2.getMax(estat);
+					else valor_heurstic = Heuristic.getHeuristic(estat);
 					System.out.println("Temps total: " + Heuristic2.getSum(estat));
 					System.out.println("Temps màxim: " + Heuristic2.getMax(estat));
-					System.out.println("SD: " + Heuristic.getSD(estat));
+					System.out.println("Standard Deviation: " + Heuristic.getSD(estat));
+					System.out.println("Valor Heurístic: " + valor_heurstic);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				break;
 			default:
-				//Error
 		}
 		long estimatedTime = System.currentTimeMillis() - startTime;
 		System.out.println("Temps (ms) : " + estimatedTime);

@@ -27,7 +27,7 @@ public class DriverExp5 {
         int n = 30;
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Heuristic SD: 1, Heuristic max: 2");
+        System.out.println("Hillclimbing: 1, Simulated annealing: 2");
         int op = sc.nextInt();
         PrintStream out = new PrintStream(new FileOutputStream("outputExp5.txt"));
         System.setOut(out);
@@ -41,7 +41,7 @@ public class DriverExp5 {
                     Servers ser = (Servers) object[0];
                     Requests req = (Requests) object[1];
                     Estat initialState = new Estat(req, ser, 3, 50);
-                    Problem hillClimbing = new Problem(initialState, new GeneradoraSuccesors(), new EstatFinal(), new Heuristic2());
+                    Problem hillClimbing = new Problem(initialState, new GeneradoraSuccesors(), new EstatFinal(), new Heuristic());
                     Search hillClimbingSearch = new HillClimbingSearch();
                     SearchAgent searchAgent = null;
                     searchAgent = new SearchAgent(hillClimbing, hillClimbingSearch);

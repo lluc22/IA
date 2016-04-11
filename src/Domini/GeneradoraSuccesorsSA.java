@@ -7,7 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Classe utilitzada per a generar estats successors adaptada a l'algorisme de Simulated Annealing
+ */
 public class GeneradoraSuccesorsSA  implements SuccessorFunction{
+    /**
+     *
+     * @param o estat actual
+     * @return un estat successor escollit aleatòriament d'entre els posssibles successors
+     */
     @Override
     public List getSuccessors(Object o) {
         Heuristic heuristic = new Heuristic();

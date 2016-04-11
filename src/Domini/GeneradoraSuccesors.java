@@ -6,7 +6,15 @@ import aima.search.framework.SuccessorFunction;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe utilitzada per a generar un conjunt d'estat successors adaptada a l'algorisme Hill Climbing
+ */
 public class GeneradoraSuccesors implements SuccessorFunction {
+    /**
+     *
+     * @param o estat actual
+     * @return una llista de TOTS els estats successors possibles de o.
+     */
     @Override
     public List getSuccessors(Object o) {
         List retVal = new ArrayList();

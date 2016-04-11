@@ -5,12 +5,23 @@ import java.util.Iterator;
 import java.util.Set;
 
 import IA.DistFS.*;
+
+/**
+ * Classe utilitzada per representar l'estat.
+ */
 public class Estat {
 	public int[] mPeticions;
 	public int[] mTempsServidors;
 	public Requests mRequests;
 	public Servers mServers;
 
+	/**
+	 * Constructora utilitzada per a crear una instància d'estat inicial.
+	 * @param requests peticions generades
+	 * @param servers Servidors generats
+	 * @param numGenIni numero de solució inicial(1:naif, 2: llindar màxim, 3:temps mínim)
+     * @param nserv nombre de servidors generats.
+     */
 	public Estat(Requests requests,Servers servers, int numGenIni, int nserv){
 		mRequests = requests;
 		mServers = servers;
@@ -22,6 +33,13 @@ public class Estat {
 		else if(numGenIni == 3) {generarSolMinTime(mRequests, mServers);}
 	}
 
+	/**
+	 * Constructora que s'usa per a guardar-nos un estat qualssevol que no és inicial.
+	 * @param requests peticions generades
+	 * @param servers Servidors generats
+	 * @param peticions vector de peticions actuals
+	 *  @param tempsServidors vector de temps actuals
+     */
 	public Estat(Requests requests, Servers servers, int[] peticions, int[] tempsServidors){
 		mRequests = requests;
 		mServers = servers;
@@ -30,6 +48,12 @@ public class Estat {
 	}
 
 	//Operadors
+
+	/**
+	 * Operador que assigna una petició amb id=pet a un servidor amb id=serv. Actualitza els temps dels servidors.
+	 * @param pet id de la petició.
+	 * @param serv id del servidor.
+     */
 	public void assigna (int pet, int serv) {
 		int usuari = mRequests.getRequest(pet)[0];
 		int servAntic = mPeticions[pet];
@@ -38,6 +62,11 @@ public class Estat {
 		mTempsServidors[serv] += mServers.tranmissionTime(serv, usuari);
 	}
 
+	/**
+	 * Operador que intercanvia l'assignació d'una petició amb id=pet1 amb una altra amb id=pet2.
+	 * @param pet1 id de la primera petició
+	 * @param pet2 id de la segona petició
+     */
 	public void intercanvia (int pet1, int pet2) {
 		int tempsAntic1 = mServers.tranmissionTime(mPeticions[pet1], mRequests.getRequest(pet1)[0]);
 		int tempsAntic2 = mServers.tranmissionTime(mPeticions[pet2], mRequests.getRequest(pet2)[0]);
@@ -50,7 +79,12 @@ public class Estat {
 		mPeticions[pet2] = aux;
 	}
 
-
+	/**
+	 * Funció que comprova si es pot emprar l'operador assignar donats una petició i un servidor.
+	 * @param pet id de la petició
+	 * @param serv id del servidor.
+     * @return cert, si l'assignació entre petició amb id=pet i el servior amb id=serv es pot realitzar.
+     */
 	public boolean potAssignar (int pet, int serv) {
 		int fileId = mRequests.getRequest(pet)[1];
 		Set<Integer> fileLocations = mServers.fileLocations(fileId);
@@ -84,6 +118,11 @@ public class Estat {
 		}
 	}
 
+	/**
+	 * Genera una soluci'inicial amb un temps màxim llindar, que totes les assignacions han de ser inferiors a aquest llindar.
+	 * @param req peticions demanades
+	 * @param ser servidors actuals
+     */
 	public void generarSolMaxTime(Requests req, Servers ser){
 		int fileId0 = req.getRequest(0)[1];
 		int userId0 = req.getRequest(0)[0];
@@ -104,7 +143,13 @@ public class Estat {
 			maxTime = values[2];
 		}
 	}
-	private void generarSolMinTime(Requests req, Servers ser){
+
+	/**
+	 * Genera una solució assignant cada petició al servidor més proper que conté el fitxer
+	 * @param req peticions demandades
+	 * @param ser servidors actuals
+     */
+	public void generarSolMinTime(Requests req, Servers ser){
 		for(int i = 0; i < req.size(); ++i){
 			int[] values = cercaMin(ser.fileLocations(req.getRequest(i)[1]),ser,req.getRequest(i)[0]);
 			mPeticions[i] = values[0];

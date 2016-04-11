@@ -103,7 +103,7 @@ public class Main {
 					Estat estat = (Estat) hillClimbingSearch.getGoalState();
 					if(heuristic ==1) valor_heurstic = Heuristic2.getMax(estat);
 					else valor_heurstic = Heuristic.getHeuristic(estat);
-					System.out.println("Temps total: " + Heuristic2.getSum(estat));
+					System.out.println("Temps total: " + Heuristic.getSum(estat));
 					System.out.println("Temps màxim: " + Heuristic2.getMax(estat));
 					System.out.println("Standard Deviation: " + Heuristic.getSD(estat));
 					System.out.println("Valor Heurístic: " + valor_heurstic);
@@ -130,7 +130,7 @@ public class Main {
 					Estat estat = (Estat) simulatedAnnealingSearch.getGoalState();
 					if(heuristic ==1) valor_heurstic = Heuristic2.getMax(estat);
 					else valor_heurstic = Heuristic.getHeuristic(estat);
-					System.out.println("Temps total: " + Heuristic2.getSum(estat));
+					System.out.println("Temps total: " + Heuristic.getSum(estat));
 					System.out.println("Temps màxim: " + Heuristic2.getMax(estat));
 					System.out.println("Standard Deviation: " + Heuristic.getSD(estat));
 					System.out.println("Valor Heurístic: " + valor_heurstic);
